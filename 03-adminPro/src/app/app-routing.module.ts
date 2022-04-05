@@ -8,6 +8,11 @@ const routes: Routes = [
   // Path /dashboard PagesRouting
   // Path /auth AuthRouting
   {
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full',
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },
