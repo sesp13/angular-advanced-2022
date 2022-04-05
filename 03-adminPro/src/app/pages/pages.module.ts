@@ -24,7 +24,6 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     RouterModule,
-    NgChartsModule,
     SharedModule,
     ComponentsModule,
   ],

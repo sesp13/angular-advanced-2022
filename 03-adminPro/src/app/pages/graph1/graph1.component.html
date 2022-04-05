@@ -1,1 +1,27 @@
-<p>graph1 works!</p>
+<div class="row">
+  <div class="col-md-6 col-xl-4">
+    <app-doughnut
+      [title]="'Best consoles in market'"
+      [labels]="['Nintendo switch', 'Ps5', 'Xbox series x']"
+      [data1]="[1110, 2000, 1500]"
+      [colors]="['red', 'blue', 'green']"
+    ></app-doughnut>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <app-doughnut></app-doughnut>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <app-doughnut
+      [title]="'Best songs in the world'"
+      [labels]="['On my mind', 'Counting Stars', 'Marchin On']"
+      [data1]="[10, 9, 10]"
+      [colors]="['black', 'green', 'purple']"
+    ></app-doughnut>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <app-doughnut
+      [title]="'Another stuff to test this graph'"
+      [labels]="['Thing 1', 'Thing 2', 'Thing 3']"
+    ></app-doughnut>
+  </div>
+</div>
