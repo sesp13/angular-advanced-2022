@@ -11,16 +11,4 @@ export class ProgressComponent {
   get getPercentage(): string {
     return `${this.progress}%`;
   }
-
-  changeValue(value: number): void {
-    if (this.progress + value >= 100) {
-      this.progress = 100;
-      return;
-    }
-    if (this.progress + value <= 0) {
-      this.progress = 0;
-      return;
-    }
-    this.progress += value;
-  }
 }
