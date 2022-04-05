@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { Graph1Component } from './graph1/graph1.component';
 import { ProgressComponent } from './progress/progress.component';
 import { RouterModule } from '@angular/router';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,14 @@ import { RouterModule } from '@angular/router';
     Graph1Component,
     ProgressComponent,
     PagesComponent,
+    AccountSettingsComponent,
+  ],
+  exports: [
+    DashboardComponent,
+    Graph1Component,
+    ProgressComponent,
+    PagesComponent,
+    AccountSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -26,12 +35,6 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     SharedModule,
     ComponentsModule,
-  ],
-  exports: [
-    DashboardComponent,
-    Graph1Component,
-    ProgressComponent,
-    PagesComponent,
   ],
 })
 export class PagesModule {}

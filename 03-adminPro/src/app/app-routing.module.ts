@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { PagesRoutingModule } from './pages/pages.routing.module';
+import { PagesRoutingModule } from './pages/pages-routing.module';
 
 const routes: Routes = [
   // Path /dashboard PagesRouting
