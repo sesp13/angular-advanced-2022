@@ -7,7 +7,7 @@
     <!-- Logo -->
     <!-- ============================================================== -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="index.html">
+      <a class="navbar-brand" [routerLink]="['/dashboard']">
         <!-- Logo icon --><b>
           <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
           <!-- Dark Logo icon -->
@@ -292,7 +292,9 @@
           >
             <i class="flag-icon flag-icon-us"></i
           ></a>
-          <div class="dropdown-menu dropdown-menu-right animated fadeIn fast-animation">
+          <div
+            class="dropdown-menu dropdown-menu-right animated fadeIn fast-animation"
+          >
             <a class="dropdown-item" href="#"
               ><i class="flag-icon flag-icon-in"></i> India</a
             >
@@ -322,7 +324,9 @@
               alt="user"
               class="profile-pic"
           /></a>
-          <div class="dropdown-menu dropdown-menu-right animated fadeIn fast-animation">
+          <div
+            class="dropdown-menu dropdown-menu-right animated fadeIn fast-animation"
+          >
             <ul class="dropdown-user">
               <li>
                 <div class="dw-user-box">
@@ -352,7 +356,9 @@
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a href="#"><i class="ti-settings"></i> Account Setting</a>
+                <a [routerLink]="['/dashboard/account-settings']"
+                  ><i class="ti-settings"></i> Account Setting</a
+                >
               </li>
               <li role="separator" class="divider"></li>
               <li>
