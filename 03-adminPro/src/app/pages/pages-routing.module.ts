@@ -9,7 +9,6 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 
-
 const routes: Routes = [
   {
     path: 'dashboard',
@@ -19,26 +18,44 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
+        data: {
+          title: 'Dashboard',
+        },
       },
       {
         path: 'progress',
         component: ProgressComponent,
+        data: {
+          title: 'Progress Bar',
+        },
       },
       {
         path: 'graph1',
         component: Graph1Component,
+        data: {
+          title: 'Graph 1',
+        },
       },
       {
         path: 'account-settings',
         component: AccountSettingsComponent,
+        data: {
+          title: 'Account Settings',
+        },
       },
       {
         path: 'promises',
         component: PromisesComponent,
+        data: {
+          title: 'Promises',
+        },
       },
       {
         path: 'rxjs',
         component: RxjsComponent,
+        data: {
+          title: 'RxJs',
+        },
       },
     ],
   },
@@ -46,6 +63,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class PagesRoutingModule {}
