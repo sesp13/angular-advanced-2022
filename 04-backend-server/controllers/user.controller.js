@@ -1,4 +1,5 @@
 const { request, response } = require('express');
+const bcryptjs = require('bcryptjs');
 const User = require('../models/User.model');
 
 const getUsers = async (req = request, res = response) => {
@@ -20,7 +21,7 @@ const getUsers = async (req = request, res = response) => {
 
 const createUser = async (req = request, res = response) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password } = req.body;
     // Check duplicated emails
     const emailExits = await User.findOne({ email });
     if (emailExits)
@@ -29,13 +30,16 @@ const createUser = async (req = request, res = response) => {
         msg: 'The email was registered',
       });
 
-    const user = new User();
     // Set data
-    user.name = name;
-    user.email = email;
-    user.password = password;
+    const user = new User(req.body);
+
+    // encrypt password
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
     // Store in db
     await user.save();
+
     return res.json({
       ok: true,
       user,
@@ -44,7 +48,7 @@ const createUser = async (req = request, res = response) => {
     console.log(error);
     return res.status(500).json({
       ok: false,
-      msg: 'Error during user creation',
+      msg: 'Error during user creation, please check logs',
     });
   }
 };
