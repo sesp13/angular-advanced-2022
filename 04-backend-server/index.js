@@ -12,6 +12,9 @@ const app = express();
 // Config cors
 app.use(cors());
 
+// Read and body parse
+app.use(express.json());
+
 // routes
 app.get('/', (req = request, res = response) => {
   res.status(200).json({ ok: true, msg: 'Hello world' });
