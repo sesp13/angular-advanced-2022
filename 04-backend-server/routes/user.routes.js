@@ -10,7 +10,7 @@ const { fieldValidator } = require('../middlewares/fieldValidator.middleware');
 const { validateJWT } = require('../middlewares/validateJWT.middleware');
 
 /*
- * Base Url: /api/users/
+ * Base Url: /api/user
  */
 const router = Router();
 
