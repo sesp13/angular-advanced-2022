@@ -19,6 +19,7 @@ app.use(express.json());
 app.get('/', (req = request, res = response) => {
   res.status(200).json({ ok: true, msg: 'Hello world' });
 });
+app.use('/api/login', require('./routes/auth.routes'));
 app.use('/api/users', require('./routes/user.routes'));
 
 // Turn on server

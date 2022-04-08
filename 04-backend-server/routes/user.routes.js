@@ -7,13 +7,14 @@ const {
 } = require('../controllers/user.controller');
 const { check } = require('express-validator');
 const { fieldValidator } = require('../middlewares/fieldValidator.middleware');
+const { validateJWT } = require('../middlewares/validateJWT.middleware');
 
 /*
  * Base Url: /api/users/
  */
 const router = Router();
 
-router.get('/', getUsers);
+router.get('/', [validateJWT], getUsers);
 
 router.post(
   '/',
@@ -29,11 +30,12 @@ router.post(
 router.put(
   '/:id',
   [
+    validateJWT,
     check('id', 'The id must have the correct structure').isMongoId(),
     check('name', 'The name is required').notEmpty(),
     check('email', 'The email is required').notEmpty().isEmail(),
     check('role', 'The role is required').notEmpty(),
-    fieldValidator
+    fieldValidator,
   ],
   updateUser
 );
@@ -41,8 +43,9 @@ router.put(
 router.delete(
   '/:id',
   [
+    validateJWT,
     check('id', 'The id must have the correct structure').isMongoId(),
-    fieldValidator
+    fieldValidator,
   ],
   deleteUser
 );
