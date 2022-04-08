@@ -53,7 +53,55 @@ const createUser = async (req = request, res = response) => {
   }
 };
 
+const updateUser = async (req = request, res = response) => {
+  // TODO implement validation token
+  const uid = req.params.id;
+  try {
+    const userDb = await User.findById(uid);
+    if (!userDb) {
+      return res.status(404).json({
+        ok: false,
+        msg: `Not user found with id ${uid}`,
+      });
+    }
+
+    // Updates
+    const { password, google, email, ...fields } = req.body;
+    // Check email
+    if (userDb.email != email) {
+      const emailExists = await User.findOne({ email: email });
+      if (emailExists) {
+        return res.status(400).json({
+          ok: false,
+          msg: 'The email is already used',
+        });
+      }
+      else {
+        // Set email
+        fields.email = email;
+      }
+    }
+    
+    const userUpdated = await User.findByIdAndUpdate(uid, fields, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      ok: true,
+      msg: 'Update user',
+      user: userUpdated,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Error during user creation, please check logs',
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   createUser,
+  updateUser,
 };

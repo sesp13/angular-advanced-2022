@@ -6,7 +6,7 @@ const fieldValidator = (req = request, res = response, next) => {
   if (!errors.isEmpty())
     return res.status(400).json({
       ok: false,
-      msg: 'Error during user creation',
+      msg: 'Error during field validation',
       errors: errors.mapped(),
     });
 
