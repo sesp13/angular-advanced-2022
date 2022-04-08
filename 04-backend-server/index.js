@@ -16,6 +16,7 @@ app.use(cors());
 app.get('/', (req = request, res = response) => {
   res.status(200).json({ ok: true, msg: 'Hello world' });
 });
+app.use('/api/users', require('./routes/user.routes'));
 
 // Turn on server
 const port = process.env.PORT || 5000;
