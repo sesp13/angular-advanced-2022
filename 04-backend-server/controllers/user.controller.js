@@ -75,13 +75,12 @@ const updateUser = async (req = request, res = response) => {
           ok: false,
           msg: 'The email is already used',
         });
-      }
-      else {
+      } else {
         // Set email
         fields.email = email;
       }
     }
-    
+
     const userUpdated = await User.findByIdAndUpdate(uid, fields, {
       new: true,
     });
@@ -100,8 +99,35 @@ const updateUser = async (req = request, res = response) => {
   }
 };
 
+const deleteUser = async (req = request, res = response) => {
+  const uid = req.params.id;
+  try {
+    const dbUser = await User.findById(uid);
+    if (!dbUser)
+      return res.status(404).json({
+        ok: false,
+        msg: `Not user found with id ${uid}`,
+      });
+
+    // Delete user
+    await User.deleteOne({ _id: dbUser._id });
+
+    return res.status(200).json({
+      ok: true,
+      msg: 'Delete user',
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error during user deletion, please check logs',
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   createUser,
   updateUser,
+  deleteUser,
 };

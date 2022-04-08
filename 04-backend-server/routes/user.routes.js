@@ -3,6 +3,7 @@ const {
   getUsers,
   createUser,
   updateUser,
+  deleteUser,
 } = require('../controllers/user.controller');
 const { check } = require('express-validator');
 const { fieldValidator } = require('../middlewares/fieldValidator.middleware');
@@ -28,12 +29,22 @@ router.post(
 router.put(
   '/:id',
   [
+    check('id', 'The id must have the correct structure').isMongoId(),
     check('name', 'The name is required').notEmpty(),
     check('email', 'The email is required').notEmpty().isEmail(),
     check('role', 'The role is required').notEmpty(),
     fieldValidator
   ],
   updateUser
+);
+
+router.delete(
+  '/:id',
+  [
+    check('id', 'The id must have the correct structure').isMongoId(),
+    fieldValidator
+  ],
+  deleteUser
 );
 
 module.exports = router;
