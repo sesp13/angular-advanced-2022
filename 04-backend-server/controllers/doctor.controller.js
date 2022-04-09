@@ -1,4 +1,5 @@
 const { request, response } = require('express');
+const Doctor = require('../models/Doctor.model');
 
 const getDoctors = async (req = request, res = response) => {
   try {
@@ -17,9 +18,18 @@ const getDoctors = async (req = request, res = response) => {
 
 const createDoctor = async (req = request, res = response) => {
   try {
+    const uid = req.uid;
+    const doctor = new Doctor({
+      user: uid,
+      ...req.body,
+    });
+    // Save doctor
+    await doctor.save();
+
     return res.status(200).json({
       ok: true,
       msg: 'Create doctor',
+      doctor,
     });
   } catch (error) {
     console.log(error);
@@ -64,5 +74,5 @@ module.exports = {
   getDoctors,
   createDoctor,
   updateDoctor,
-  deleteDoctor
+  deleteDoctor,
 };
