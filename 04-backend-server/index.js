@@ -19,9 +19,10 @@ app.use(express.json());
 app.get('/', (req = request, res = response) => {
   res.status(200).json({ ok: true, msg: 'Hello world' });
 });
-app.use('/api/login', require('./routes/auth.routes'));
 app.use('/api/user', require('./routes/user.routes'));
 app.use('/api/hospital', require('./routes/hospital.routes'));
+app.use('/api/doctor', require('./routes/doctor.routes'));
+app.use('/api/login', require('./routes/auth.routes'));
 
 // Turn on server
 const port = process.env.PORT || 5000;
