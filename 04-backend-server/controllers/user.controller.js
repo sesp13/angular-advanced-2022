@@ -5,11 +5,21 @@ const { generateJWT } = require('../helpers/jwt.helper');
 
 const getUsers = async (req = request, res = response) => {
   try {
-    const users = await User.find({}, 'name email role google');
+    // From which register the information will be taken
+    const from = Number(req.query.from) || 0;
+    // The size of the pages to take
+    const size = Number(req.query.size) || 5;
+
+    const [ users, total ] = await Promise.all([
+      User.find({}, 'name email role google').skip(from).limit(size),
+      User.count(),
+    ]);
+
     return res.json({
       ok: true,
       msg: 'Get Users',
       users,
+      total,
     });
   } catch (error) {
     console.log(error);
