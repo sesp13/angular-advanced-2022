@@ -1,3 +1,19 @@
 /node_modules/
 /ignore/
 .env
+
+# Uploads folder
+!/uploads
+/uploads/*
+
+!/uploads/doctors
+/uploads/doctors/*
+!/uploads/doctors/README.md
+
+!/uploads/users/
+/uploads/users/*
+!/uploads/users/README.md
+
+!/uploads/hospitals/
+/uploads/hospitals/*
+!/uploads/hospitals/README.md
