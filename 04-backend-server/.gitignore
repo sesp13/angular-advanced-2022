@@ -5,6 +5,7 @@
 # Uploads folder
 !/uploads
 /uploads/*
+!/uploads/no-img.jpg
 
 !/uploads/doctors
 /uploads/doctors/*

@@ -1,6 +1,8 @@
 const { request, response } = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { updateImage, deleteImage } = require('../helpers/update-image.helper');
+const path = require('path');
+const fs = require('fs');
 
 const uploadImage = async (req = request, res = response) => {
   try {
@@ -77,6 +79,25 @@ const uploadImage = async (req = request, res = response) => {
   }
 };
 
+const getImage = async (req = request, res = response) => {
+  const { collection, photo } = req.params;
+  try {
+    let pathImg = path.join(__dirname, `../uploads/${collection}/${photo}`);
+    if (!fs.existsSync(pathImg)) {
+      // Send default image
+      pathImg = path.join(__dirname, `../uploads/no-img.jpg`);
+    }
+    res.sendFile(pathImg);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: `Error getting the image ${collection}/${photo} please check logs`,
+    });
+  }
+};
+
 module.exports = {
   uploadImage,
+  getImage,
 };

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { uploadImage } = require('../controllers/uploads.controller');
+const { uploadImage, getImage } = require('../controllers/uploads.controller');
 const { validateJWT } = require('../middlewares/validateJWT.middleware');
 const fileUpload = require('express-fileupload');
 const { check } = require('express-validator');
@@ -13,12 +13,14 @@ const router = Router();
 // Use this middleware to upload files
 router.use(fileUpload());
 
+router.get('/:collection/:photo', [], getImage);
+
 router.put(
   '/:collection/:id',
   [
     validateJWT,
     check('id', 'The id must have the correct structure').isMongoId(),
-    fieldValidator
+    fieldValidator,
   ],
   uploadImage
 );
