@@ -1,5 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +23,7 @@ export class RegisterComponent implements OnInit {
     { validators: [this.equalPasswords('password', 'password2')] }
   );
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
     // Default fields
@@ -34,13 +37,16 @@ export class RegisterComponent implements OnInit {
 
   createUser(): void {
     this.formSubmitted = true;
-    console.log(this.registerForm.value);
 
     if (this.registerForm.valid) {
-      console.log('Posting form');
-    } else {
-      console.log(this.registerForm);
-      console.log('Invalid form');
+      this.userService.createUser(this.registerForm.value).subscribe({
+        next: (res) => {
+          Swal.fire('Success', 'The user was created', 'success');
+        },
+        error: (err: HttpErrorResponse) => {
+          Swal.fire('Error', err.error.msg, 'error');
+        },
+      });
     }
   }
 
