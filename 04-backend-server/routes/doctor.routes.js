@@ -32,8 +32,31 @@ router.post(
   createDoctor
 );
 
-router.put('/:id', [], updateDoctor);
+router.put(
+  '/:id',
+  [
+    validateJWT,
+    check('name', 'The name field is required').notEmpty(),
+    check(
+      'hospital',
+      'The field hospital is required and it must have the correct structure'
+    )
+      .notEmpty()
+      .isMongoId(),
+    check('id', 'The id must have the correct structure').isMongoId(),
+    fieldValidator,
+  ],
+  updateDoctor
+);
 
-router.delete('/:id', [], deleteDoctor);
+router.delete(
+  '/:id',
+  [
+    validateJWT,
+    check('id', 'The id must have the correct structure').isMongoId(),
+    fieldValidator,
+  ],
+  deleteDoctor
+);
 
 module.exports = router;

@@ -9,7 +9,7 @@ const getDoctors = async (req = request, res = response) => {
     return res.status(200).json({
       ok: true,
       msg: 'Get doctors',
-      doctors
+      doctors,
     });
   } catch (error) {
     console.log(error);
@@ -45,10 +45,30 @@ const createDoctor = async (req = request, res = response) => {
 };
 
 const updateDoctor = async (req = request, res = response) => {
+  const uid = req.uid;
+  const id = req.params.id;
   try {
+    const doctorDb = await Doctor.findById(id);
+    if (!doctorDb)
+      return res.status(404).json({
+        ok: false,
+        msg: `The doctor ${id} doesn't exists`,
+      });
+
+    const doctorChanges = {
+      user: uid,
+      ...req.body,
+    };
+
+    // Update
+    const doctorUpdated = await Doctor.findByIdAndUpdate(id, doctorChanges, {
+      new: true,
+    });
+
     return res.status(200).json({
       ok: true,
       msg: 'Update doctor',
+      doctor: doctorUpdated,
     });
   } catch (error) {
     console.log(error);
@@ -60,7 +80,18 @@ const updateDoctor = async (req = request, res = response) => {
 };
 
 const deleteDoctor = async (req = request, res = response) => {
+  const id = req.params.id;
   try {
+    const doctorDb = await Doctor.findById(id);
+    if (!doctorDb)
+      return res.status(404).json({
+        ok: false,
+        msg: `The doctor ${id} doesn't exists`,
+      });
+
+    // Delete doctor
+    await Doctor.findByIdAndDelete(id);
+
     return res.status(200).json({
       ok: true,
       msg: 'Delete doctor',
