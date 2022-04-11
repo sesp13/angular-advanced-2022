@@ -15,6 +15,9 @@ app.use(cors());
 // Read and body parse
 app.use(express.json());
 
+// Use of public directory
+app.use(express.static('public'));
+
 // routes
 app.get('/', (req = request, res = response) => {
   res.status(200).json({ ok: true, msg: 'Hello world' });

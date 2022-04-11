@@ -2,6 +2,7 @@ const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
 const User = require('../models/User.model');
 const { generateJWT } = require('../helpers/jwt.helper');
+const { googleVerify } = require('../helpers/googleVerify.helper');
 
 const login = async (req = request, res = response) => {
   const { email, password } = req.body;
@@ -21,7 +22,7 @@ const login = async (req = request, res = response) => {
         ok: false,
         msg: 'Invalid user / password',
       });
-    
+
     // Generate JWT
     const token = await generateJWT(dbUser.id);
 
@@ -39,6 +40,50 @@ const login = async (req = request, res = response) => {
   }
 };
 
+const googleSignIn = async (req = request, res = response) => {
+  try {
+    const googleToken = req.body.token;
+    const { name, email, picture } = await googleVerify(googleToken);
+
+    const userDB = await User.findOne({ email });
+    let user;
+    if (!userDB) {
+      // The user doesn't exists
+      user = new User({
+        name,
+        email,
+        // Set a deafult password, this user will only be able to log using this method
+        password: '_',
+        img: picture,
+        google: true,
+      });
+    } else {
+      // The user exists
+      user = userDB;
+      user.google = true;
+    }
+
+    // Save on db
+    await user.save();
+
+    // Generate JWT
+    const token = await generateJWT(user.id);
+
+    return res.status(200).json({
+      ok: true,
+      msg: 'Success google sign in',
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      ok: false,
+      msg: 'Invalid token, please check logs',
+    });
+  }
+};
+
 module.exports = {
   login,
+  googleSignIn,
 };
