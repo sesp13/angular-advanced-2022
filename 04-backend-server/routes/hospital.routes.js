@@ -26,8 +26,25 @@ router.post(
   createHospital
 );
 
-router.put('/:id', [], updateHospital);
+router.put(
+  '/:id',
+  [
+    validateJWT,
+    check('name', 'The name field is required').notEmpty(),
+    check('id', 'The id must have the correct structure').isMongoId(),
+    fieldValidator,
+  ],
+  updateHospital
+);
 
-router.delete('/:id', [], deleteHospital);
+router.delete(
+  '/:id',
+  [
+    validateJWT,
+    check('id', 'The id must have the correct structure').isMongoId(),
+    fieldValidator,
+  ],
+  deleteHospital
+);
 
 module.exports = router;
