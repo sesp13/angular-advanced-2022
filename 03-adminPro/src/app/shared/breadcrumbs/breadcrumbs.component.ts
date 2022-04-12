@@ -13,7 +13,7 @@ export class BreadcrumbsComponent implements OnDestroy {
 
   constructor(private router: Router, private route: ActivatedRoute) {
     // Another way to read params 
-    console.log(route.snapshot.children[0].data);
+    // console.log(route.snapshot.children[0].data);
 
     this.titleSubs = this.getDataArgs().subscribe(({ title }) => {
       this.title = title;

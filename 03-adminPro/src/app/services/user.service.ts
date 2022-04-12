@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/loginForm.interface';
 import { RegisterForm } from '../interfaces/registerForm.interface';
@@ -26,10 +26,27 @@ export class UserService {
       .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
   }
 
-  loginGoogle(token: string) {
+  loginGoogle(token: string): Observable<any> {
     const url = `${this.authUrl}/google`;
     return this.http
       .post(url, { token })
       .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
+  }
+
+  renewToken(): Observable<boolean> {
+    const token = localStorage.getItem('token') || '';
+    const url = `${this.authUrl}/renew`;
+    // Add token to headers
+    return this.http
+      .get(url, {
+        headers: {
+          'x-token': token,
+        },
+      })
+      .pipe(
+        tap((res: any) => localStorage.setItem('token', res.token)),
+        map(() => true),
+        catchError(() => of(false))
+      );
   }
 }

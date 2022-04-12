@@ -91,9 +91,10 @@ export class LoginComponent implements OnInit {
       {},
       (googleUser: any) => {
         const id_token = googleUser.getAuthResponse().id_token;
-        this.userService
-          .loginGoogle(id_token)
-          .subscribe((result) => console.log(result));
+        this.userService.loginGoogle(id_token).subscribe(() => {
+          // Navigate to dashboard
+          this.router.navigateByUrl('/dashboard');
+        });
       },
       (error: any) => {
         alert(JSON.stringify(error, undefined, 2));
