@@ -319,10 +319,7 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img
-              src="./assets/images/users/1.jpg"
-              alt="user"
-              class="profile-pic"
+            ><img [src]="user?.imageUrl" alt="user" class="profile-pic"
           /></a>
           <div
             class="dropdown-menu dropdown-menu-right animated fadeIn fast-animation"
@@ -331,11 +328,17 @@
               <li>
                 <div class="dw-user-box">
                   <div class="u-img">
-                    <img src="./assets/images/users/1.jpg" alt="user" />
+                    <img [src]="user?.imageUrl" alt="user" />
                   </div>
                   <div class="u-text">
-                    <h4>Steave Jobs</h4>
-                    <p class="text-muted">varun@gmail.com</p>
+                    <h4>
+                      {{ user?.name | slice: 0:17 }}
+                      {{ (user?.name?.length ?? 0) > 17 ? "..." : "" }}
+                    </h4>
+                    <p class="text-muted">
+                      {{ user?.email | slice: 0:17 }}
+                      {{ (user?.email?.length ?? 0) > 17 ? "..." : "" }}
+                    </p>
                     <a
                       href="pages-profile.html"
                       class="btn btn-rounded btn-danger btn-sm"
@@ -362,7 +365,9 @@
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a (click)="logout()" class="pointer"><i class="fa fa-power-off"></i> Logout</a>
+                <a (click)="logout()" class="pointer"
+                  ><i class="fa fa-power-off"></i> Logout</a
+                >
               </li>
             </ul>
           </div>

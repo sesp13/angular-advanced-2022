@@ -5,6 +5,7 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/loginForm.interface';
 import { RegisterForm } from '../interfaces/registerForm.interface';
+import { User } from '../models/user.model';
 declare const gapi: any;
 
 @Injectable({
@@ -12,6 +13,7 @@ declare const gapi: any;
 })
 export class UserService {
   auth2: any;
+  user?: User;
 
   baseUrl: string = environment.baseUrl;
   authUrl: string = `${this.baseUrl}/login`;
@@ -55,8 +57,14 @@ export class UserService {
         },
       })
       .pipe(
-        tap((res: any) => localStorage.setItem('token', res.token)),
-        map(() => true),
+        map((res: any) => {
+          localStorage.setItem('token', res.token);
+          // Set auth user
+          const { name, email, role, google, img, uid } = res.user;
+          this.user = new User(name, email, undefined, img, google, role, uid);
+          // Create Observable response
+          return true;
+        }),
         catchError(() => of(false))
       );
   }

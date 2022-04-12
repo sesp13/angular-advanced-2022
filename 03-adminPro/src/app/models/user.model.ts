@@ -1,11 +1,21 @@
+import { environment } from 'src/environments/environment';
+
+const baseUrl = environment.baseUrl;
+
 export class User {
   constructor(
-    name: string,
-    email: string,
-    password?: string,
-    img?: string,
-    google?: boolean,
-    role?: string,
-    uid?: string
+    public name: string,
+    public email: string,
+    public password?: string,
+    public img?: string,
+    public google?: boolean,
+    public role?: string,
+    public uid?: string
   ) {}
+
+  get imageUrl(): string {
+    return this.img?.includes('https')
+      ? this.img
+      : `${baseUrl}/uploads/users/${this.img}`;
+  }
 }
