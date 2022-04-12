@@ -10,6 +10,7 @@ import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -26,10 +27,10 @@ const routes: Routes = [
         },
       },
       {
-        path: 'progress',
-        component: ProgressComponent,
+        path: 'account-settings',
+        component: AccountSettingsComponent,
         data: {
-          title: 'Progress Bar',
+          title: 'Account Settings',
         },
       },
       {
@@ -40,10 +41,17 @@ const routes: Routes = [
         },
       },
       {
-        path: 'account-settings',
-        component: AccountSettingsComponent,
+        path: 'profile',
+        component: ProfileComponent,
         data: {
-          title: 'Account Settings',
+          title: 'Profile',
+        },
+      },
+      {
+        path: 'progress',
+        component: ProgressComponent,
+        data: {
+          title: 'Progress Bar',
         },
       },
       {

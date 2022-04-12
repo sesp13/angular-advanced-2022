@@ -5,6 +5,7 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/loginForm.interface';
 import { RegisterForm } from '../interfaces/registerForm.interface';
+import { UpdateUserForm } from '../interfaces/updateUserForm.interface';
 import { User } from '../models/user.model';
 declare const gapi: any;
 
@@ -19,6 +20,14 @@ export class UserService {
   authUrl: string = `${this.baseUrl}/login`;
   userUrl: string = `${this.baseUrl}/user`;
 
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get userUid() {
+    return this.user?.uid ?? '';
+  }
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -31,6 +40,16 @@ export class UserService {
     return this.http
       .post(this.userUrl, formData)
       .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
+  }
+
+  updateUser(formData: UpdateUserForm) {
+    // Build correct data
+    const data = {
+      ...formData,
+      role: this.user?.role
+    }
+    const url = `${this.userUrl}/${this.userUid}`;
+    return this.http.put(url, data, { headers: { 'x-token': this.token } });
   }
 
   loginUser(formData: LoginForm): Observable<any> {
@@ -47,13 +66,12 @@ export class UserService {
   }
 
   renewToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
     const url = `${this.authUrl}/renew`;
     // Add token to headers
     return this.http
       .get(url, {
         headers: {
-          'x-token': token,
+          'x-token': this.token,
         },
       })
       .pipe(

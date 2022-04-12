@@ -340,7 +340,7 @@
                       {{ (user?.email?.length ?? 0) > 17 ? "..." : "" }}
                     </p>
                     <a
-                      href="pages-profile.html"
+                      [routerLink]="['/dashboard/profile']"
                       class="btn btn-rounded btn-danger btn-sm"
                       >View Profile</a
                     >
