@@ -10,8 +10,10 @@
     <div class="card-body">
       <form
         class="form-horizontal form-material"
-        (submit)="login()"
+        (ngSubmit)="login()"
         id="loginform"
+        [formGroup]="loginForm"
+        autocomplete="off"
       >
         <a href="javascript:void(0)" class="text-center db"
           ><img src="../assets/images/logo-icon.png" alt="Home" /><br /><img
@@ -22,9 +24,9 @@
           <div class="col-xs-12">
             <input
               class="form-control"
-              type="text"
-              required=""
-              placeholder="Username"
+              type="email"
+              placeholder="Email"
+              formControlName="email"
             />
           </div>
         </div>
@@ -33,8 +35,8 @@
             <input
               class="form-control"
               type="password"
-              required=""
               placeholder="Password"
+              formControlName="password"
             />
           </div>
         </div>
@@ -45,6 +47,7 @@
                 id="checkbox-signup"
                 type="checkbox"
                 class="filled-in chk-col-light-blue"
+                formControlName="remember"
               />
               <label for="checkbox-signup"> Remember me </label>
             </div>
@@ -56,6 +59,20 @@
             >
           </div>
         </div>
+        <!-- Errors -->
+        <div class="row">
+          <div class="col text-danger">
+            <ul>
+              <li *ngIf="invalidField('email')">
+                <small>Invalid email</small>
+              </li>
+              <li *ngIf="invalidField('password')">
+                <small>The password is required</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- End errors -->
         <div class="form-group text-center m-t-20">
           <div class="col-xs-12">
             <button
