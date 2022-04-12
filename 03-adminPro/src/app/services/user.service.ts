@@ -25,4 +25,11 @@ export class UserService {
       .post(this.authUrl, formData)
       .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
   }
+
+  loginGoogle(token: string) {
+    const url = `${this.authUrl}/google`;
+    return this.http
+      .post(url, { token })
+      .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
+  }
 }
