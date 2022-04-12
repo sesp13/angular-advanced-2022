@@ -88,10 +88,14 @@ const renewToken = async (req = request, res = response) => {
   try {
     // Generate new token
     const token = await generateJWT(uid);
+    // Get user
+    const user = await User.findById(uid);
+    
     return res.status(200).json({
       ok: true,
       msg: 'Renew token',
       token,
+      user,
     });
   } catch (error) {
     console.log(error);
