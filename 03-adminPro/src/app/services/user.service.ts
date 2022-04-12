@@ -1,18 +1,29 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/loginForm.interface';
 import { RegisterForm } from '../interfaces/registerForm.interface';
+declare const gapi: any;
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  auth2: any;
+
   baseUrl: string = environment.baseUrl;
   authUrl: string = `${this.baseUrl}/login`;
   userUrl: string = `${this.baseUrl}/user`;
-  constructor(private http: HttpClient) {}
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private ngZone: NgZone
+  ) {
+    this.googleInit();
+  }
 
   createUser(formData: RegisterForm): Observable<any> {
     return this.http
@@ -48,5 +59,30 @@ export class UserService {
         map(() => true),
         catchError(() => of(false))
       );
+  }
+
+  async googleInit() {
+    return new Promise((resolve) => {
+      gapi.load('auth2', () => {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        this.auth2 = gapi.auth2.init({
+          client_id:
+            '413438018271-3ja5lgg721ltsvm1860qafviior8ruek.apps.googleusercontent.com',
+          cookiepolicy: 'single_host_origin',
+        });
+        // resolve promise
+        resolve(true);
+      });
+    });
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    // Kill google auth session
+    this.auth2.signOut().then(() => {
+      this.ngZone.run(() => {
+        this.router.navigateByUrl('/login');
+      });
+    });
   }
 }
