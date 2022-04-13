@@ -92,7 +92,14 @@ const updateUser = async (req = request, res = response) => {
         });
       } else {
         // Set email, only allow non google users to update it
-        if (!userDb.google) fields.email = email;
+        if (!userDb.google) {
+          fields.email = email;
+        } else if (email !== userDb.email) {
+          return res.status(400).json({
+            ok: false,
+            msg: 'Google users cannot change their email',
+          });
+        }
       }
     }
 
