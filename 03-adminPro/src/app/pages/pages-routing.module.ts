@@ -12,6 +12,9 @@ import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 
+// Maintenance
+import { UsersComponent } from './maintenance/users/users.component';
+
 const routes: Routes = [
   {
     path: 'dashboard',
@@ -66,6 +69,14 @@ const routes: Routes = [
         component: RxjsComponent,
         data: {
           title: 'RxJs',
+        },
+      },
+      // Maintenance
+      {
+        path: 'users',
+        component: UsersComponent,
+        data: {
+          title: 'Application users',
         },
       },
     ],

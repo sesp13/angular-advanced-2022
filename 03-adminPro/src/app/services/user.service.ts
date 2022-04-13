@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LoadUsers } from '../interfaces/loadUsers.interface';
 import { LoginForm } from '../interfaces/loginForm.interface';
 import { RegisterForm } from '../interfaces/registerForm.interface';
 import { UpdateUserForm } from '../interfaces/updateUserForm.interface';
@@ -16,7 +17,7 @@ export class UserService {
   private baseUrl: string = environment.baseUrl;
   private authUrl: string = `${this.baseUrl}/login`;
   private userUrl: string = `${this.baseUrl}/user`;
-  
+
   auth2: any;
   user?: User;
 
@@ -26,6 +27,12 @@ export class UserService {
 
   get userUid() {
     return this.user?.uid ?? '';
+  }
+
+  get headers() {
+    return {
+      'x-token': this.token,
+    };
   }
 
   constructor(
@@ -46,10 +53,18 @@ export class UserService {
     // Build correct data
     const data = {
       ...formData,
-      role: this.user?.role
-    }
+      role: this.user?.role,
+    };
     const url = `${this.userUrl}/${this.userUid}`;
-    return this.http.put(url, data, { headers: { 'x-token': this.token } });
+    return this.http.put(url, data, { headers: this.headers });
+  }
+
+  loadUsers(from: number = 0): Observable<LoadUsers> {
+    const params = new HttpParams().set('from', from);
+    return this.http.get<LoadUsers>(this.userUrl, {
+      params,
+      headers: this.headers,
+    });
   }
 
   // ----------------- Auth -------------------------
