@@ -28,6 +28,7 @@
                 id="exampleInputEmail1"
                 placeholder="Enter email"
                 formControlName="email"
+                [readonly]="user?.google"
               />
             </div>
           </div>
@@ -47,11 +48,15 @@
       <div class="card-body">
         <h4 class="card-title">Avatar</h4>
         <h6 class="card-subtitle">User image</h6>
-        <img src="" alt="" />
-        <input type="file" />
-        <button
+        <div class="text-center p-2">
+          <img [src]="imageUrl" alt="Image" class="img-avatar" />
+        </div>
+        <input type="file" (change)="changeImage($event)" />
+          <button
           type="button"
           class="btn btn-success btn-block waves-effect waves-light mt-4"
+          [disabled]="!uploadingImage"
+          (click)="updateImage()"
         >
           <i class="fa fa-save"></i> Change image
         </button>

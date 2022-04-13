@@ -13,12 +13,12 @@ declare const gapi: any;
   providedIn: 'root',
 })
 export class UserService {
+  private baseUrl: string = environment.baseUrl;
+  private authUrl: string = `${this.baseUrl}/login`;
+  private userUrl: string = `${this.baseUrl}/user`;
+  
   auth2: any;
   user?: User;
-
-  baseUrl: string = environment.baseUrl;
-  authUrl: string = `${this.baseUrl}/login`;
-  userUrl: string = `${this.baseUrl}/user`;
 
   get token(): string {
     return localStorage.getItem('token') || '';
@@ -51,6 +51,8 @@ export class UserService {
     const url = `${this.userUrl}/${this.userUid}`;
     return this.http.put(url, data, { headers: { 'x-token': this.token } });
   }
+
+  // ----------------- Auth -------------------------
 
   loginUser(formData: LoginForm): Observable<any> {
     return this.http

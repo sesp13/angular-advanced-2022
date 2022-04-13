@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
+import { User } from 'src/app/models/user.model';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,9 +14,16 @@ import Swal from 'sweetalert2';
 export class ProfileComponent implements OnInit {
   user?: User;
   profileForm?: FormGroup;
+  uploadingImage?: File;
+  imageUrl?: any = null;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private fileUploadService: FileUploadService
+  ) {
     this.user = userService.user;
+    this.imageUrl = userService.user?.imageUrl;
   }
 
   ngOnInit(): void {
@@ -40,5 +48,35 @@ export class ProfileComponent implements OnInit {
         Swal.fire('Error', err.error.msg ?? 'Error on update', 'error');
       },
     });
+  }
+
+  changeImage(event: any): void {
+    this.uploadingImage = event.target?.files[0];
+    if (!this.uploadingImage) { 
+      // Use the current user image
+      this.imageUrl = this.user?.imageUrl;
+      return;
+    }
+    // Get preview url
+    const reader = new FileReader();
+    reader.readAsDataURL(this.uploadingImage);
+    reader.onloadend = () => {
+      this.imageUrl = reader.result;
+    };
+  }
+
+  updateImage(): void {
+    if (this.uploadingImage)
+      this.fileUploadService
+        .uploadPhoto(this.uploadingImage, 'users', this.userService.userUid)
+        .then((img) => {
+          if (img) {
+            // Change user image by reference
+            if (this.user) this.user.img = img;
+            Swal.fire('Success', 'The image was updated', 'success');
+          } else {
+            Swal.fire('Error', "The image couldn't be updated", 'error');
+          }
+        });
   }
 }
