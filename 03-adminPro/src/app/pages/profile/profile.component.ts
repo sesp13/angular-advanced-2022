@@ -35,12 +35,17 @@ export class ProfileComponent implements OnInit {
 
   updateProfile(): void {
     this.userService.updateUser(this.profileForm?.value).subscribe({
-      next: (res) => {
-        const { name, email } = this.profileForm?.value;
-        // This also updates other instances thanks to the reference in the service
+      next: (res: any) => {
+        const { name, email } = res.user;
         if (this.user) {
+          // This also updates other instances thanks to the reference in the service
           this.user.name = name;
           this.user.email = email;
+          // Set values in form
+          this.profileForm?.reset({
+            name,
+            email,
+          });
         }
         Swal.fire('Success', 'The user was updated', 'success');
       },
@@ -52,7 +57,7 @@ export class ProfileComponent implements OnInit {
 
   changeImage(event: any): void {
     this.uploadingImage = event.target?.files[0];
-    if (!this.uploadingImage) { 
+    if (!this.uploadingImage) {
       // Use the current user image
       this.imageUrl = this.user?.imageUrl;
       return;
