@@ -61,10 +61,28 @@ export class UserService {
 
   loadUsers(from: number = 0): Observable<LoadUsers> {
     const params = new HttpParams().set('from', from);
-    return this.http.get<LoadUsers>(this.userUrl, {
-      params,
-      headers: this.headers,
-    });
+    return this.http
+      .get<LoadUsers>(this.userUrl, {
+        params,
+        headers: this.headers,
+      })
+      .pipe(
+        map((res) => {
+          // Create instances
+          const users = res.users.map((user) => {
+            return new User(
+              user.name,
+              user.email,
+              '',
+              user.img,
+              user.google,
+              user.role,
+              user.uid
+            );
+          });
+          return { users, total: res.total };
+        })
+      );
   }
 
   // ----------------- Auth -------------------------
