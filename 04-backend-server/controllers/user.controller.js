@@ -10,7 +10,7 @@ const getUsers = async (req = request, res = response) => {
     // The size of the pages to take
     const size = Number(req.query.size) || 5;
 
-    const [ users, total ] = await Promise.all([
+    const [users, total] = await Promise.all([
       User.find({}, 'name email role google img').skip(from).limit(size),
       User.countDocuments(),
     ]);
@@ -70,7 +70,6 @@ const createUser = async (req = request, res = response) => {
 };
 
 const updateUser = async (req = request, res = response) => {
-  // TODO implement validation token
   const uid = req.params.id;
   try {
     const userDb = await User.findById(uid);
@@ -92,8 +91,8 @@ const updateUser = async (req = request, res = response) => {
           msg: 'The email is already used',
         });
       } else {
-        // Set email
-        fields.email = email;
+        // Set email, only allow non google users to update it
+        if (!userDb.google) fields.email = email;
       }
     }
 
