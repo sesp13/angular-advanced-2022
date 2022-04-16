@@ -49,7 +49,8 @@ export class UserService {
       .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
   }
 
-  updateUser(formData: UpdateUserForm) {
+  // Update current user profile
+  updateProfile(formData: UpdateUserForm) {
     // Build correct data
     const data = {
       ...formData,
@@ -57,6 +58,11 @@ export class UserService {
     };
     const url = `${this.userUrl}/${this.userUid}`;
     return this.http.put(url, data, { headers: this.headers });
+  }
+
+  updateUser(user: User) {
+    const url = `${this.userUrl}/${user.uid}`;
+    return this.http.put(url, user, { headers: this.headers });
   }
 
   loadUsers(from: number = 0): Observable<LoadUsers> {

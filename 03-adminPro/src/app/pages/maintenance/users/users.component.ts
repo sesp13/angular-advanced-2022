@@ -80,4 +80,16 @@ export class UsersComponent implements OnInit {
       }
     });
   }
+
+  changeRole(user: User) {
+    this.userService.updateUser(user).subscribe({
+      error: () => {
+        Swal.fire(
+          'Error',
+          `The role of ${user?.name} couldn't be updated`,
+          'error'
+        );
+      },
+    });
+  }
 }
