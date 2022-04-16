@@ -62,7 +62,12 @@
                   <a href="#" data-toggle="tooltip" data-original-title="Edit">
                     <i class="fa fa-pencil text-inverse m-r-10"></i>
                   </a>
-                  <a href="#" data-toggle="tooltip" data-original-title="Close">
+                  <a
+                    (click)="deleteUser(user)"
+                    data-toggle="tooltip"
+                    data-original-title="Close"
+                    class="pointer"
+                  >
                     <i class="fa fa-close text-danger"></i>
                   </a>
                 </td>

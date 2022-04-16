@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { SearchsService } from 'src/app/services/searchs.service';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -52,5 +53,31 @@ export class UsersComponent implements OnInit {
     } else {
       this.getUsers();
     }
+  }
+
+  deleteUser(user: User): void {
+    if (this.userService.user?.uid === user?.uid) {
+      Swal.fire('Error', "You can't delete yourself", 'error');
+      return;
+    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You are about to delete ${user?.name}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes delete it!',
+    }).then((result) => {
+      if (result.value) {
+        this.userService.deleteUser(user.uid).subscribe((res: any) => {
+          Swal.fire(
+            'Deleted!',
+            `The user ${user?.name} has been deleted`,
+            'success'
+          );
+          // Make the request again
+          this.getUsers();
+        });
+      }
+    });
   }
 }

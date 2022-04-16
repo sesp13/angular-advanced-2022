@@ -85,6 +85,11 @@ export class UserService {
       );
   }
 
+  deleteUser(uid?: string): Observable<any> {
+    const url = `${this.userUrl}/${uid}`;
+    return this.http.delete(url, { headers: this.headers });
+  }
+
   // ----------------- Auth -------------------------
 
   loginUser(formData: LoginForm): Observable<any> {
