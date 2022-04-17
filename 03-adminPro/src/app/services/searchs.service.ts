@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
+import { allowedType } from '../types/upload.type';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +40,7 @@ export class SearchsService {
   constructor(private http: HttpClient) {}
 
   search(
-    type: 'users' | 'doctors' | 'hospitals',
+    type: allowedType,
     term: string
   ): Observable<any> {
     const url = `${this.searchUrl}/collection/${type}/${term}`;

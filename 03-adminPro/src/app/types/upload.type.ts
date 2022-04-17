@@ -1,0 +1,1 @@
+export type allowedType = 'doctors' | 'users' | 'hospitals';

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { allowedType } from '../types/upload.type';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class FileUploadService {
 
   async uploadPhoto(
     file: File,
-    type: 'users' | 'doctors' | 'hospitals',
+    type: allowedType,
     id: string
   ): Promise<any> {
     try {

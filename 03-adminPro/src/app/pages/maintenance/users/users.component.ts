@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user.model';
+import { ModalImageService } from 'src/app/services/modal-image.service';
 import { SearchsService } from 'src/app/services/searchs.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
@@ -9,19 +11,25 @@ import Swal from 'sweetalert2';
   templateUrl: './users.component.html',
   styles: [],
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
   totalUsers: number = 0;
   users: User[] = [];
   from: number = 0;
   loading: boolean = true;
+  newImagesSub?: Subscription;
 
   constructor(
     private userService: UserService,
-    private searchService: SearchsService
+    private searchService: SearchsService,
+    private modalImageService: ModalImageService
   ) {}
 
   ngOnInit(): void {
     this.getUsers();
+    // Refresh the users if a new image is uploaded
+    this.newImagesSub = this.modalImageService.newImage.subscribe(() => {
+      this.getUsers();
+    });
   }
 
   getUsers(): void {
@@ -91,5 +99,14 @@ export class UsersComponent implements OnInit {
         );
       },
     });
+  }
+
+  openModal(user: User) {
+    this.modalImageService.openModal('users', user?.uid ?? '', user?.img);
+  }
+
+  ngOnDestroy(): void {
+    // Kill subscription of new images
+    this.newImagesSub?.unsubscribe();
   }
 }
