@@ -2,7 +2,13 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Search Hospital" />
+        <input
+          #txtSearch
+          type="text"
+          class="form-control"
+          placeholder="Search hospital"
+          (keyup)="search(txtSearch.value)"
+        />
       </div>
     </div>
   </div>
@@ -18,24 +24,44 @@
   </div>
 </div>
 
-<div class="row" *ngIf="!loading">
+<div class="row animated fadeIn fast" *ngIf="!loading">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Hospitals {{ hospitals.length }}</h4>
-        <h6 class="card-subtitle">Hospitals registered in the application</h6>
+        <div class="row">
+          <div class="col-8">
+            <h4 class="card-title">Hospitals ({{ hospitals.length }})</h4>
+            <h6 class="card-subtitle">
+              Hospitals registered in the application
+            </h6>
+          </div>
+          <div class="col-4">
+            <div class="text-right mb-4">
+              <button class="btn btn-primary" (click)="openCreateModal()">
+                <i class="fa fa-hospital-o"></i> Create hospital
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Photo</th>
+                <th class="w100">Photo</th>
                 <th>Name</th>
-                <th class="text-nowrap">Actions</th>
+                <th class="text-nowrap w100">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let hospital of hospitals">
-                <td>{{ hospital?.img }}</td>
+                <td class="text-center">
+                  <img
+                    src="{{ hospital?.img ?? '' | image: 'hospitals' }}"
+                    [alt]="hospital.name"
+                    class="img-avatar cursor"
+                    (click)="openModal(hospital)"
+                  />
+                </td>
                 <td>
                   <input
                     type="text"
@@ -45,10 +71,20 @@
                   />
                 </td>
                 <td class="text-nowrap text-center">
-                  <a href="#" data-toggle="tooltip" data-original-title="Save changes">
+                  <a
+                    (click)="saveChanges(hospital)"
+                    data-toggle="tooltip"
+                    data-original-title="Save changes"
+                    class="cursor"
+                  >
                     <i class="fa fa-pencil text-inverse m-r-10"></i>
                   </a>
-                  <a href="#" data-toggle="tooltip" data-original-title="Close">
+                  <a
+                    (click)="deleteHospital(hospital)"
+                    data-toggle="tooltip"
+                    data-original-title="Close"
+                    class="cursor"
+                  >
                     <i class="fa fa-close text-danger"></i>
                   </a>
                 </td>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Hospital } from '../models/hospital.model';
 import { User } from '../models/user.model';
 import { allowedType } from '../types/upload.type';
 
@@ -22,6 +23,8 @@ export class SearchsService {
     };
   }
 
+  constructor(private http: HttpClient) {}
+
   private transformUsers(results: any[]): User[] {
     const users = results.map((user) => {
       return new User(
@@ -37,18 +40,28 @@ export class SearchsService {
     return users;
   }
 
-  constructor(private http: HttpClient) {}
+  private transformHospitals(results: any[]): Hospital[] {
+    const hospitals = results.map((hospital) => {
+      return new Hospital(
+        hospital.name,
+        hospital?._id,
+        hospital?.user,
+        hospital?.img
+      );
+    });
+    return hospitals;
+  }
 
-  search(
-    type: allowedType,
-    term: string
-  ): Observable<any> {
+  search(type: allowedType, term: string): Observable<any> {
     const url = `${this.searchUrl}/collection/${type}/${term}`;
     return this.http.get<any[]>(url, { headers: this.headers }).pipe(
       map((res: any) => {
         switch (type) {
           case 'users': {
             return this.transformUsers(res.content);
+          }
+          case 'hospitals': {
+            return this.transformHospitals(res.content);
           }
           default: {
             return [];

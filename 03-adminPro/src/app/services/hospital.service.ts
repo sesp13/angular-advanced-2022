@@ -31,4 +31,35 @@ export class HospitalService {
       })
       .pipe(map((res: LoadHospitals) => res.hospitals ?? []));
   }
+
+  createHospital(name: string): Observable<any> {
+    return this.http.post(
+      this.hospitalUrl,
+      { name },
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  updateHospital(_id: string, name: string): Observable<any> {
+    const url = `${this.hospitalUrl}/${_id}`;
+    return this.http.put(
+      url,
+      { name },
+      {
+        headers: this.headers,
+      }
+    );
+  }
+
+  deleteHospital(_id: string): Observable<any> {
+    const url = `${this.hospitalUrl}/${_id}`;
+    return this.http.delete(
+      url,
+      {
+        headers: this.headers,
+      }
+    );
+  }
 }
