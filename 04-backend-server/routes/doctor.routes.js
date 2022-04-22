@@ -5,6 +5,7 @@ const {
   getDoctors,
   updateDoctor,
   deleteDoctor,
+  getDoctorById,
 } = require('../controllers/doctor.controller');
 const { fieldValidator } = require('../middlewares/fieldValidator.middleware');
 const { validateJWT } = require('../middlewares/validateJWT.middleware');
@@ -15,6 +16,8 @@ const { validateJWT } = require('../middlewares/validateJWT.middleware');
 const router = Router();
 
 router.get('/', [validateJWT], getDoctors);
+
+router.get('/:id', [validateJWT], getDoctorById);
 
 router.post(
   '/',

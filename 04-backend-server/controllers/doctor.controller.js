@@ -19,6 +19,32 @@ const getDoctors = async (req = request, res = response) => {
     });
   }
 };
+const getDoctorById = async (req = request, res = response) => {
+  try {
+    const id = req.params.id;
+    const doctor = await Doctor.findById(id)
+      .populate('user', 'name img')
+      .populate('hospital', 'name img');
+
+    if (!doctor)
+      return res.status(404).json({
+        ok: false,
+        msg: `The doctor with id ${id} not found`,
+      });
+
+    return res.status(200).json({
+      ok: true,
+      msg: 'Get doctor by Id',
+      doctor,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error: Get doctors please check logs',
+    });
+  }
+};
 
 const createDoctor = async (req = request, res = response) => {
   try {
@@ -107,6 +133,7 @@ const deleteDoctor = async (req = request, res = response) => {
 
 module.exports = {
   getDoctors,
+  getDoctorById,
   createDoctor,
   updateDoctor,
   deleteDoctor,
