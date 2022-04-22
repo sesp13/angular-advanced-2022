@@ -63,14 +63,24 @@ export class HospitalsComponent implements OnInit, OnDestroy {
   }
 
   deleteHospital(hospital: Hospital) {
-    const id = hospital?._id ?? '';
-    this.hospitalService.deleteHospital(id).subscribe(() => {
-      Swal.fire(
-        'Success',
-        `The hospital ${hospital?.name} was deleted`,
-        'success'
-      );
-      this.loadHospitals();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You are about to delete ${hospital?.name}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes delete it'!,
+    }).then((result) => {
+      if (result.value) {
+        const id = hospital?._id ?? '';
+        this.hospitalService.deleteHospital(id).subscribe(() => {
+          Swal.fire(
+            'Success',
+            `The hospital ${hospital?.name} was deleted`,
+            'success'
+          );
+          this.loadHospitals();
+        });
+      }
     });
   }
 
@@ -94,7 +104,6 @@ export class HospitalsComponent implements OnInit, OnDestroy {
       this.loadHospitals();
     }
   }
-
 
   ngOnDestroy(): void {
     // Kill subscription of new images

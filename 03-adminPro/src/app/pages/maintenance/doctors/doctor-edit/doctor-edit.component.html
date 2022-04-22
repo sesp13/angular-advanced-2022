@@ -1,1 +1,78 @@
-<p>doctor-edit works!</p>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Doctor</h4>
+        <h6 class="card-subtitle">Update information</h6>
+        <form class="form-horizontal p-t-20">
+          <div class="form-group row">
+            <label for="" class="col-sm-3 control-label">Image </label>
+            <div class="col-sm-9">
+              <img
+                src="http://localhost:3000/api/uploads/users/2a1cf7e7-009e-4959-a6bb-4d12962f0100.jpeg"
+                alt="Doctor"
+                class="w200"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputuname3" class="col-sm-3 control-label"
+              >Name*
+            </label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-user"></i></div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputuname3"
+                  placeholder="Doctor Name"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail3" class="col-sm-3 control-label"
+              >Hospital*</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-email"></i></div>
+                <select class="form-control" name="hospital">
+                  <option value="">Hospital 1</option>
+                  <option value="">Hospital 2</option>
+                  <option value="">Hospital 3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row m-b-0">
+            <div class="offset-sm-3 col-sm-9">
+              <button
+                type="submit"
+                class="btn btn-success waves-effect waves-light"
+              >
+                <i class="fa fa-save"></i>
+                Save changes
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Hospital</h4>
+        <h4 class="card-subtitle">Selected hospital</h4>
+        
+        <img
+          src="http://localhost:3000/api/uploads/users/2a1cf7e7-009e-4959-a6bb-4d12962f0100.jpeg"
+          alt="Doctor"
+          class="w200"
+        />
+      </div>
+    </div>
+  </div>
+</div>

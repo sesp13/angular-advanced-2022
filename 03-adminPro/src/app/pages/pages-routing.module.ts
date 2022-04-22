@@ -83,7 +83,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'doctors/:id',
+        path: 'doctor/:id',
         component: DoctorEditComponent,
         data: {
           title: 'Doctors',

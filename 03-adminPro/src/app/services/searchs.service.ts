@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Doctor } from '../models/doctor.model';
 import { Hospital } from '../models/hospital.model';
 import { User } from '../models/user.model';
 import { allowedType } from '../types/upload.type';
@@ -52,6 +53,19 @@ export class SearchsService {
     return hospitals;
   }
 
+  private transformDoctors(results: any[]): Doctor[] {
+    const doctors = results.map((doctor) => {
+      return new Doctor(
+        doctor.name,
+        doctor?._id,
+        doctor?.user,
+        doctor?.hospital,
+        doctor?.img
+      );
+    });
+    return doctors;
+  }
+
   search(type: allowedType, term: string): Observable<any> {
     const url = `${this.searchUrl}/collection/${type}/${term}`;
     return this.http.get<any[]>(url, { headers: this.headers }).pipe(
@@ -62,6 +76,9 @@ export class SearchsService {
           }
           case 'hospitals': {
             return this.transformHospitals(res.content);
+          }
+          case 'doctors': {
+            return this.transformDoctors(res.content);
           }
           default: {
             return [];
