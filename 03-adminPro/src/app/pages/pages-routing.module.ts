@@ -17,6 +17,7 @@ import { DoctorsComponent } from './maintenance/doctors/doctors.component';
 import { DoctorEditComponent } from './maintenance/doctors/doctor-edit/doctor-edit.component';
 import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
 import { UsersComponent } from './maintenance/users/users.component';
+import { SearchsComponent } from './searchs/searchs.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,13 @@ const routes: Routes = [
         component: RxjsComponent,
         data: {
           title: 'RxJs',
+        },
+      },
+      {
+        path: 'search/:term',
+        component: SearchsComponent,
+        data: {
+          title: 'Application Searchs',
         },
       },
       // Maintenance
