@@ -19,3 +19,9 @@ export class User {
       : `${baseUrl}/uploads/users/${this.img}`;
   }
 }
+
+export interface GenericUser{
+  name: string;
+  img: string;
+  _id: string;
+}

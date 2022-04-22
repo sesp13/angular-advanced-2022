@@ -14,6 +14,7 @@ import { ProfileComponent } from './profile/profile.component';
 
 // Maintenance
 import { DoctorsComponent } from './maintenance/doctors/doctors.component';
+import { DoctorEditComponent } from './maintenance/doctors/doctor-edit/doctor-edit.component';
 import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
 import { UsersComponent } from './maintenance/users/users.component';
 
@@ -77,6 +78,13 @@ const routes: Routes = [
       {
         path: 'doctors',
         component: DoctorsComponent,
+        data: {
+          title: 'Doctors',
+        },
+      },
+      {
+        path: 'doctors/:id',
+        component: DoctorEditComponent,
         data: {
           title: 'Doctors',
         },
