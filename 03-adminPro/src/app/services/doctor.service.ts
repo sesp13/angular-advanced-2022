@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LoadDoctors } from '../interfaces/loadDoctors.interface';
+import { LoadDoctor, LoadDoctors } from '../interfaces/loadDoctors.interface';
 import { Doctor } from '../models/doctor.model';
 
 @Injectable({
@@ -32,14 +32,27 @@ export class DoctorService {
       .pipe(map((res: LoadDoctors) => res.doctors ?? []));
   }
 
-  createDoctor(doctor: Doctor): Observable<any> {
-    return this.http.post(this.doctorUrl, doctor, { headers: this.headers });
+  getDoctorById(id: string): Observable<Doctor> {
+    // Redeclare id behavior
+    id = id == '' ? 'default' : id;
+    const url = `${this.doctorUrl}/${id}`;
+    return this.http
+      .get(url, { headers: this.headers })
+      .pipe(map((res: LoadDoctor) => res?.doctor ?? new Doctor('')));
   }
 
-  updateDoctor(doctor: Doctor): Observable<any> {
+  createDoctor(doctor: Doctor): Observable<Doctor> {
+    return this.http
+      .post(this.doctorUrl, doctor, { headers: this.headers })
+      .pipe(map((res: LoadDoctor) => res.doctor ?? new Doctor('')));
+  }
+
+  updateDoctor(doctor: Doctor): Observable<Doctor> {
     const id = doctor?._id ?? 'no-id';
     const url = `${this.doctorUrl}/${id}`;
-    return this.http.put(url, doctor, { headers: this.headers });
+    return this.http
+      .put(url, doctor, { headers: this.headers })
+      .pipe(map((res: LoadDoctor) => res.doctor ?? new Doctor('')));
   }
 
   deleteDoctor(id: string = 'no-id'): Observable<any> {

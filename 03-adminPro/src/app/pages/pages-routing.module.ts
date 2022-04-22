@@ -86,7 +86,7 @@ const routes: Routes = [
         path: 'doctor/:id',
         component: DoctorEditComponent,
         data: {
-          title: 'Doctors',
+          title: 'Doctor',
         },
       },
       {

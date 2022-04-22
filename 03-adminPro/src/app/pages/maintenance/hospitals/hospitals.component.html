@@ -56,7 +56,7 @@
               <tr *ngFor="let hospital of hospitals">
                 <td class="text-center">
                   <img
-                    src="{{ hospital?.img ?? '' | image: 'hospitals' }}"
+                    [src]="hospital?.img ?? '' | image: 'hospitals'"
                     [alt]="hospital.name"
                     class="img-avatar cursor"
                     (click)="openModal(hospital)"

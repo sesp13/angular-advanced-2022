@@ -35,8 +35,11 @@
           </div>
           <div class="col-4">
             <div class="text-right mb-4">
-              <a class="btn btn-primary" [routerLink]="['/dashboard/doctor/new']">
-                 Create doctor <i class="fa fa-plus pl-2"></i>
+              <a
+                class="btn btn-primary"
+                [routerLink]="['/dashboard/doctor/new']"
+              >
+                Create doctor <i class="fa fa-plus pl-2"></i>
               </a>
             </div>
           </div>
@@ -54,7 +57,7 @@
               <tr *ngFor="let doctor of doctors">
                 <td>
                   <img
-                    src="{{ doctor.img ?? '' | image: 'doctors' }}"
+                    [src]="doctor.img ?? '' | image: 'doctors'"
                     [alt]="doctor.name"
                     class="img-avatar cursor"
                     (click)="openModal(doctor)"

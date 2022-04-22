@@ -5,3 +5,8 @@ export interface LoadDoctors {
   msg?: string;
   doctors?: Doctor[];
 }
+export interface LoadDoctor {
+  ok?: boolean;
+  msg?: string;
+  doctor?: Doctor;
+}
