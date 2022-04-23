@@ -8,7 +8,7 @@ const getAll = async (req = request, res = response) => {
   const regex = new RegExp(term, 'i');
   try {
     // Multiple collection search
-    const [users, doctors, hospitals] = Promise.all([
+    const [users, doctors, hospitals] = await Promise.all([
       User.find({ name: regex }),
       Doctor.find({ name: regex }),
       Hospital.find({ name: regex }),

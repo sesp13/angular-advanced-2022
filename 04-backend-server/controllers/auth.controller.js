@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/User.model');
 const { generateJWT } = require('../helpers/jwt.helper');
 const { googleVerify } = require('../helpers/googleVerify.helper');
+const { getMenuFrontend } = require('../helpers/menuFrontend.helper');
 
 const login = async (req = request, res = response) => {
   const { email, password } = req.body;
@@ -25,11 +26,14 @@ const login = async (req = request, res = response) => {
 
     // Generate JWT
     const token = await generateJWT(dbUser.id);
+    // Get menu
+    const menu = getMenuFrontend(dbUser.role);
 
     return res.status(200).json({
       ok: true,
       msg: 'Login',
       token,
+      menu,
     });
   } catch (error) {
     console.log(error);
@@ -68,11 +72,14 @@ const googleSignIn = async (req = request, res = response) => {
 
     // Generate JWT
     const token = await generateJWT(user.id);
+    // Get menu
+    const menu = getMenuFrontend(user.role);
 
     return res.status(200).json({
       ok: true,
       msg: 'Success google sign in',
       token,
+      menu,
     });
   } catch (error) {
     console.log(error);
@@ -90,12 +97,14 @@ const renewToken = async (req = request, res = response) => {
     const token = await generateJWT(uid);
     // Get user
     const user = await User.findById(uid);
-    
+    // Get menu
+    const menu = getMenuFrontend(user.role);
     return res.status(200).json({
       ok: true,
       msg: 'Renew token',
       token,
       user,
+      menu,
     });
   } catch (error) {
     console.log(error);
