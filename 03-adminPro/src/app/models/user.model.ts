@@ -1,4 +1,5 @@
 import { environment } from 'src/environments/environment';
+import { userRole } from '../types/userRole.type';
 
 const baseUrl = environment.baseUrl;
 
@@ -9,7 +10,7 @@ export class User {
     public password?: string,
     public img?: string,
     public google?: boolean,
-    public role?: string,
+    public role?: userRole,
     public uid?: string
   ) {}
 

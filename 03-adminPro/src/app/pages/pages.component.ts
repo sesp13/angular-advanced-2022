@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from '../services/settings.service';
-
 // This function is global it was declared on assets/js/custom.js
 declare function customInitFunctions(): any;
 
@@ -10,7 +8,7 @@ declare function customInitFunctions(): any;
   styles: [],
 })
 export class PagesComponent implements OnInit {
-  constructor(private settingsService: SettingsService) {}
+  constructor() {}
 
   ngOnInit(): void {
     customInitFunctions();

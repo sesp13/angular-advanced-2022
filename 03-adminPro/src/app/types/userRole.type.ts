@@ -1,0 +1,1 @@
+export type userRole = 'USER_ROLE' | 'ADMIN_ROLE';

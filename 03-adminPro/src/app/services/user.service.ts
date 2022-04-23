@@ -8,6 +8,7 @@ import { LoginForm } from '../interfaces/loginForm.interface';
 import { RegisterForm } from '../interfaces/registerForm.interface';
 import { UpdateUserForm } from '../interfaces/updateUserForm.interface';
 import { User } from '../models/user.model';
+import { userRole } from '../types/userRole.type';
 declare const gapi: any;
 
 @Injectable({
@@ -29,6 +30,10 @@ export class UserService {
     return this.user?.uid ?? '';
   }
 
+  get role(): userRole {
+    return this.user?.role ?? 'USER_ROLE';
+  }
+
   get headers() {
     return {
       'x-token': this.token,
@@ -43,10 +48,15 @@ export class UserService {
     this.googleInit();
   }
 
+  private setlocalInfo(res: any) {
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('menu', JSON.stringify(res.menu));
+  }
+
   createUser(formData: RegisterForm): Observable<any> {
     return this.http
       .post(this.userUrl, formData)
-      .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
+      .pipe(tap((res: any) => this.setlocalInfo(res)));
   }
 
   // Update current user profile
@@ -101,14 +111,14 @@ export class UserService {
   loginUser(formData: LoginForm): Observable<any> {
     return this.http
       .post(this.authUrl, formData)
-      .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
+      .pipe(tap((res: any) => this.setlocalInfo(res)));
   }
 
   loginGoogle(token: string): Observable<any> {
     const url = `${this.authUrl}/google`;
     return this.http
       .post(url, { token })
-      .pipe(tap((res: any) => localStorage.setItem('token', res.token)));
+      .pipe(tap((res: any) => this.setlocalInfo(res)));
   }
 
   renewToken(): Observable<boolean> {
@@ -122,7 +132,7 @@ export class UserService {
       })
       .pipe(
         map((res: any) => {
-          localStorage.setItem('token', res.token);
+          this.setlocalInfo(res);
           // Set auth user
           const { name, email, role, google, img, uid } = res.user;
           this.user = new User(name, email, undefined, img, google, role, uid);
@@ -149,7 +159,9 @@ export class UserService {
   }
 
   logout(): void {
+    // Remove local info
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
     // Kill google auth session
     this.auth2.signOut().then(() => {
       this.ngZone.run(() => {
