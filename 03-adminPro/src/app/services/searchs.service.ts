@@ -66,6 +66,11 @@ export class SearchsService {
     return doctors;
   }
 
+  globalSearch(term: string): Observable<any> {
+    const url = `${this.searchUrl}/all/${term}`;
+    return this.http.get(url, { headers: this.headers });
+  }
+
   search(type: allowedType, term: string): Observable<any> {
     const url = `${this.searchUrl}/collection/${type}/${term}`;
     return this.http.get<any[]>(url, { headers: this.headers }).pipe(
