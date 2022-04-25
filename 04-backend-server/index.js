@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const { request, response } = require('express');
 const { dbConnection } = require('./db/config');
@@ -28,6 +29,11 @@ app.use('/api/doctor', require('./routes/doctor.routes'));
 app.use('/api/login', require('./routes/auth.routes'));
 app.use('/api/search', require('./routes/search.routes'));
 app.use('/api/uploads', require('./routes/uploads.routes'));
+
+// Serve SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public/index.html'));
+});
 
 // Turn on server
 const port = process.env.PORT || 5000;
