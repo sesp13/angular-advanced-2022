@@ -19,18 +19,17 @@ export class UsersService {
   getUsers(): Observable<any> {
     let params = new HttpParams();
     params = params.append('page', '2').append('name', 'Santiago');
-    const headers = new HttpHeaders({
-      'token-user': 'AGHAAIDHIAS896217346',
-    });
-    return this.http.get(this.usersUrl, { params, headers }).pipe(
-      map((res: any) => res.data),
-      catchError(this.manageError)
-    );
+    // -------------------------- These info has been passed to the interceptor!! ----------------
+    // const headers = new HttpHeaders({
+    //   'token-user': 'AGHAAIDHIAS896217346',
+    // });
+    return this.http
+      .get(this.usersUrl, { params })
+      .pipe(map((res: any) => res.data));
   }
 
-  manageError(err: HttpErrorResponse) {
-    console.log('There was an error');
-    console.warn(err);
-    return throwError(() => 'My custom error');
+  getUsersError(): Observable<any> {
+    const url = `https://reqresuququq.in`;
+    return this.http.get(url).pipe(map((res: any) => res.data));
   }
 }

@@ -17,5 +17,10 @@ export class AppComponent implements OnInit {
     this.usersService.getUsers().subscribe((res) => {
       console.log(res);
     });
+
+    this.usersService.getUsersError().subscribe((res) => {
+      console.log(res);
+    });
+
   }
 }
